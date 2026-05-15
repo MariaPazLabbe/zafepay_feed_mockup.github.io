@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Zafepay · Proyección del feed Instagram 2026</title>
+<style>
+  :root{
+    --zafe-blue:#4F4FE8;
+    --zafe-blue-deep:#2E2EBF;
+    --zafe-blue-soft:#EEEDFE;
+    --zafe-mint:#34D8A3;
+    --zafe-mint-soft:#E3F9F0;
+    --zafe-yellow:#FFD84D;
+    --zafe-ink:#0F1037;
+    --zafe-gray:#6B6E8C;
+    --zafe-paper:#FAFAFE;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{font-family:'Inter','Helvetica Neue',Arial,sans-serif; background:#F2F2F7; color:#0F1037; -webkit-font-smoothing:antialiased; line-height:1.5;}
+  .page{max-width:1180px; margin:0 auto; padding:48px 24px 96px;}
+
+  .intro{margin-bottom:36px;}
+  .intro .tag{display:inline-block; background:var(--zafe-blue-soft); color:var(--zafe-blue-deep); font-size:11px; font-weight:600; letter-spacing:0.08em; text-transform:uppercase; padding:6px 14px; border-radius:999px; margin-bottom:14px;}
+  .intro h1{font-size:32px; font-weight:700; letter-spacing:-0.02em; margin-bottom:10px; line-height:1.2;}
+  .intro p{font-size:15px; color:var(--zafe-gray); max-width:780px;}
+
+  /* INSTAGRAM FRAME */
+  .ig-frame{background:white; border:1px solid #DBDBDB; border-radius:8px; max-width:975px; margin:0 auto; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.06);}
+
+  /* IG TOPBAR */
+  .ig-topbar{display:flex; align-items:center; padding:14px 24px; border-bottom:1px solid #DBDBDB;}
+  .ig-logo{font-family:'Brush Script MT', cursive; font-size:28px; font-weight:400; color:#0F1037; letter-spacing:-0.5px;}
+  .ig-search{flex:1; max-width:268px; margin:0 60px; background:#EFEFEF; border-radius:8px; padding:8px 16px; color:#737373; font-size:14px;}
+
+  /* IG PROFILE HEADER */
+  .ig-profile{display:flex; padding:32px 32px 24px; gap:80px;}
+  .ig-avatar-wrap{flex-shrink:0;}
+  .ig-avatar{width:150px; height:150px; border-radius:50%; background:var(--zafe-blue); display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px white, 0 0 0 5px #DBDBDB;}
+  .ig-avatar svg{width:80px; height:80px;}
+  .ig-profile-info{flex:1; min-width:0;}
+  .ig-profile-top{display:flex; align-items:center; gap:20px; margin-bottom:20px; flex-wrap:wrap;}
+  .ig-username{font-size:20px; font-weight:400; color:#262626;}
+  .ig-verified{color:#0095F6; font-size:16px; vertical-align:1px;}
+  .ig-btn{padding:8px 16px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; border:none;}
+  .ig-btn-following{background:#EFEFEF; color:#262626;}
+  .ig-btn-msg{background:#EFEFEF; color:#262626;}
+  .ig-btn-icon{background:#EFEFEF; color:#262626; padding:8px 12px;}
+  .ig-stats{display:flex; gap:40px; margin-bottom:20px;}
+  .ig-stat{font-size:16px; color:#262626;}
+  .ig-stat strong{font-weight:600; margin-right:4px;}
+  .ig-name{font-size:14px; font-weight:600; color:#262626; margin-bottom:2px;}
+  .ig-bio{font-size:14px; color:#262626; line-height:1.5; max-width:520px;}
+  .ig-bio .blue{color:#00376B; font-weight:500;}
+  .ig-bio .emoji{margin-right:4px;}
+
+  /* HIGHLIGHTS */
+  .ig-highlights{display:flex; gap:36px; padding:20px 32px 32px; overflow-x:auto;}
+  .ig-highlight{display:flex; flex-direction:column; align-items:center; gap:10px; cursor:pointer;}
+  .ig-highlight-circle{width:77px; height:77px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:relative; box-shadow:0 0 0 2px white, 0 0 0 3px #DBDBDB;}
+  .ig-highlight-circle svg{width:38px; height:38px;}
+  .ig-highlight-circle.educ{background:var(--zafe-blue);}
+  .ig-highlight-circle.pet{background:var(--zafe-mint);}
+  .ig-highlight-circle.inmo{background:var(--zafe-yellow);}
+  .ig-highlight-circle.legal{background:var(--zafe-ink);}
+  .ig-highlight-circle.casos{background:var(--zafe-blue-deep);}
+  .ig-highlight-circle.demo{background:white; box-shadow:0 0 0 2px white, 0 0 0 3px var(--zafe-blue);}
+  .ig-highlight-label{font-size:12px; color:#262626; font-weight:500;}
+
+  /* TABS */
+  .ig-tabs{display:flex; justify-content:center; gap:60px; border-top:1px solid #DBDBDB; padding-top:0;}
+  .ig-tab{padding:16px 8px; font-size:12px; font-weight:600; color:#8E8E8E; letter-spacing:0.08em; text-transform:uppercase; display:flex; align-items:center; gap:6px; border-top:2px solid transparent; margin-top:-1px;}
+  .ig-tab.active{color:#262626; border-top-color:#262626;}
+
+  /* GRID — Formato 4:5 (vertical Instagram nuevo) */
+  .ig-grid{display:grid; grid-template-columns:repeat(3, 1fr); gap:3px; padding:0; background:white;}
+  .post{aspect-ratio:4/5; position:relative; overflow:hidden; cursor:pointer;}
+
+  /* === POST DESIGNS (cuadrados 1:1 que reflejan el sistema visual) === */
+
+  /* Logo común (versión mini) */
+  .post-logo{display:flex; align-items:center; gap:6px; position:absolute; top:14px; left:14px; z-index:5;}
+  .post-logo-mark{width:18px; height:18px; background:rgba(255,255,255,0.18); border-radius:4px; display:flex; align-items:center; justify-content:center;}
+  .post-logo-mark svg{width:11px; height:11px;}
+  .post-logo-text{color:white; font-size:11px; font-weight:600; letter-spacing:-0.02em;}
+  .post-logo-text.dark{color:#0F1037;}
+  .post-logo-mark.dark{background:rgba(79,79,232,0.15);}
+  .post-logo-mark.dark svg path{fill:#4F4FE8;}
+
+  /* === POSTS REDISEÑADOS PARA APROVECHAR 4:5 === */
+  /* Todos los posts usan porcentajes/centrado en lugar de top fijo para llenar 4:5 */
+
+  /* POST 1 — Portada Educación */
+  .p1{background:var(--zafe-blue);}
+  .p1 .shape{position:absolute; top:-50px; right:-50px; width:180px; height:180px; border-radius:50%; background:var(--zafe-mint); opacity:0.18;}
+  .p1 .eyebrow{position:absolute; top:40%; left:14px; right:14px; color:var(--zafe-mint); font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; display:flex; align-items:center; gap:6px; transform:translateY(-100%); margin-bottom:8px;}
+  .p1 .eyebrow::before{content:''; width:18px; height:1.5px; background:var(--zafe-mint); display:inline-block;}
+  .p1 .title{position:absolute; top:42%; left:14px; right:14px; color:white; font-size:28px; font-weight:700; line-height:1.05; letter-spacing:-0.03em; transform:translateY(-10%);}
+  .p1 .highlight{background:var(--zafe-yellow); color:var(--zafe-ink); padding:0 5px; border-radius:3px;}
+  .p1 .badge{position:absolute; bottom:18px; left:14px; background:var(--zafe-mint); color:var(--zafe-ink); padding:7px 14px; border-radius:99px; font-size:10px; font-weight:600;}
+
+  /* POST 2 — Dato 3 de 10 */
+  .p2{background:var(--zafe-paper);}
+  .p2 .dots{position:absolute; inset:0; background-image:radial-gradient(circle, rgba(79,79,232,0.08) 1px, transparent 1px); background-size:18px 18px;}
+  .p2 .eyebrow{position:absolute; top:14%; left:14px; color:var(--zafe-blue); font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase;}
+  .p2 .big{position:absolute; top:42%; left:14px; right:14px; transform:translateY(-50%); color:var(--zafe-blue); font-size:105px; font-weight:700; line-height:0.9; letter-spacing:-0.05em;}
+  .p2 .big .accent{color:var(--zafe-mint);}
+  .p2 .desc{position:absolute; bottom:18px; left:14px; right:14px; color:var(--zafe-ink); font-size:13px; font-weight:500; line-height:1.3;}
+  .p2 .desc strong{color:var(--zafe-blue);}
+
+  /* POST 3 — Lista errores */
+  .p3{background:var(--zafe-blue);}
+  .p3 .title{position:absolute; top:14%; left:14px; right:14px; color:white; font-size:15px; font-weight:700; line-height:1.15;}
+  .p3 .item{position:absolute; left:14px; right:14px; display:flex; align-items:center; gap:10px;}
+  .p3 .num{width:28px; height:28px; border-radius:50%; background:var(--zafe-mint); color:var(--zafe-ink); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0;}
+  .p3 .txt{color:white; font-size:11px; font-weight:500; line-height:1.2;}
+  .p3 .i1{top:28%;}
+  .p3 .i2{top:42%;}
+  .p3 .i3{top:56%;}
+  .p3 .i4{top:70%;}
+  .p3 .pill{position:absolute; bottom:18px; left:14px; right:14px; background:var(--zafe-yellow); color:var(--zafe-ink); padding:7px 12px; border-radius:99px; font-size:11px; font-weight:600; text-align:center;}
+
+  /* POST 4 — Testimonial Pet */
+  .p4{background:var(--zafe-mint-soft);}
+  .p4 .quote{position:absolute; top:20%; left:14px; color:var(--zafe-blue); font-size:64px; font-family:Georgia, serif; line-height:0.5;}
+  .p4 .text{position:absolute; top:42%; left:14px; right:14px; transform:translateY(-50%); color:var(--zafe-ink); font-size:16px; font-weight:500; line-height:1.25;}
+  .p4 .text strong{background:var(--zafe-yellow); padding:0 4px;}
+  .p4 .author{position:absolute; bottom:18px; left:14px; right:14px; display:flex; align-items:center; gap:10px;}
+  .p4 .avatar{width:42px; height:42px; border-radius:50%; background-image:url('https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=200&h=200&fit=crop&q=80'); background-size:cover; border:2.5px solid var(--zafe-blue);}
+  .p4 .name{font-size:11px; font-weight:600; color:var(--zafe-ink); line-height:1.2;}
+  .p4 .role{font-size:10px; color:var(--zafe-gray);}
+
+  /* POST 5 — Producto dashboard */
+  .p5{background:linear-gradient(180deg, var(--zafe-blue) 0%, var(--zafe-blue) 32%, white 32%, white 100%);}
+  .p5 .title{position:absolute; top:14%; left:14px; right:14px; color:white; font-size:16px; font-weight:700; line-height:1.15;}
+  .p5 .dash{position:absolute; top:38%; left:14px; right:14px; bottom:18px; background:white; border-radius:12px; box-shadow:0 8px 22px rgba(15,16,55,0.2); padding:10px; display:flex; gap:8px;}
+  .p5 .dash-side{width:38px; background:var(--zafe-blue); border-radius:6px;}
+  .p5 .dash-main{flex:1; display:flex; flex-direction:column; gap:6px;}
+  .p5 .dash-stat{flex:1; background:#F9F9FE; border-radius:6px; border-left:3px solid var(--zafe-blue); padding:6px 10px; display:flex; flex-direction:column; justify-content:center;}
+  .p5 .dash-stat.mint{border-left-color:var(--zafe-mint);}
+  .p5 .dash-stat.yellow{border-left-color:var(--zafe-yellow);}
+  .p5 .dash-stat-lbl{font-size:7px; color:var(--zafe-gray); text-transform:uppercase; letter-spacing:0.04em; font-weight:600;}
+  .p5 .dash-stat-val{font-size:14px; font-weight:700; color:var(--zafe-ink); line-height:1.1;}
+
+  /* POST 6 — Portada PetVet */
+  .p6{background:var(--zafe-blue-deep);}
+  .p6 .shape{position:absolute; bottom:-60px; left:-60px; width:200px; height:200px; border-radius:50%; background:var(--zafe-blue); opacity:0.5;}
+  .p6 .eyebrow{position:absolute; top:40%; left:14px; color:var(--zafe-mint); font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; display:flex; align-items:center; gap:6px; transform:translateY(-100%); margin-bottom:8px;}
+  .p6 .eyebrow::before{content:''; width:18px; height:1.5px; background:var(--zafe-mint); display:inline-block;}
+  .p6 .title{position:absolute; top:42%; left:14px; right:14px; color:white; font-size:26px; font-weight:700; line-height:1.05; letter-spacing:-0.03em; transform:translateY(-10%);}
+  .p6 .title .highlight{background:var(--zafe-yellow); color:var(--zafe-ink); padding:0 5px; border-radius:3px;}
+  .p6 .icon-pet{position:absolute; bottom:18px; right:14px; width:90px; height:90px; background:var(--zafe-mint); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:48px;}
+
+  /* POST 7 — Insight con cifra */
+  .p7{background:white;}
+  .p7 .stat-block{position:absolute; top:42%; left:14px; right:14px; transform:translateY(-50%);}
+  .p7 .stat-num{color:var(--zafe-blue); font-size:90px; font-weight:700; line-height:1; letter-spacing:-0.05em;}
+  .p7 .stat-sym{color:var(--zafe-mint); font-size:48px; font-weight:700;}
+  .p7 .stat-desc{position:absolute; bottom:42px; left:14px; right:14px; color:var(--zafe-ink); font-size:13px; font-weight:500; line-height:1.3;}
+  .p7 .stat-source{position:absolute; bottom:18px; left:14px; color:var(--zafe-gray); font-size:9px;}
+
+  /* POST 8 — Portada Inmobiliaria */
+  .p8{background:var(--zafe-blue);}
+  .p8 .icon-key{position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:var(--zafe-yellow); opacity:0.18;}
+  .p8 .eyebrow{position:absolute; top:40%; left:14px; color:var(--zafe-mint); font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; display:flex; align-items:center; gap:6px; transform:translateY(-100%); margin-bottom:8px;}
+  .p8 .eyebrow::before{content:''; width:18px; height:1.5px; background:var(--zafe-mint); display:inline-block;}
+  .p8 .title{position:absolute; top:42%; left:14px; right:14px; color:white; font-size:28px; font-weight:700; line-height:1.05; letter-spacing:-0.03em; transform:translateY(-10%);}
+  .p8 .title .highlight{background:var(--zafe-yellow); color:var(--zafe-ink); padding:0 5px; border-radius:3px;}
+  .p8 .badge{position:absolute; bottom:18px; left:14px; background:var(--zafe-mint); color:var(--zafe-ink); padding:7px 14px; border-radius:99px; font-size:10px; font-weight:600;}
+
+  /* POST 9 — CTA Demo */
+  .p9{background:var(--zafe-ink);}
+  .p9 .shape{position:absolute; bottom:-60px; right:-60px; width:200px; height:200px; border-radius:50%; background:var(--zafe-blue); opacity:0.4;}
+  .p9 .eyebrow{position:absolute; top:38%; left:14px; color:var(--zafe-mint); font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; transform:translateY(-100%); margin-bottom:8px;}
+  .p9 .title{position:absolute; top:40%; left:14px; right:14px; color:white; font-size:28px; font-weight:700; line-height:1.05; letter-spacing:-0.03em; transform:translateY(-10%);}
+  .p9 .cta{position:absolute; bottom:18px; left:14px; background:var(--zafe-mint); color:var(--zafe-ink); padding:8px 16px; border-radius:99px; font-size:11px; font-weight:600;}
+
+  /* POST 10 — Frase motivacional */
+  .p10{background:var(--zafe-yellow);}
+  .p10 .frase{position:absolute; top:50%; left:14px; right:14px; transform:translateY(-50%); color:var(--zafe-ink); font-size:24px; font-weight:700; line-height:1.15; letter-spacing:-0.02em; text-align:center;}
+  .p10 .frase em{font-style:italic; font-weight:600;}
+  .p10 .firma{position:absolute; bottom:18px; left:0; right:0; text-align:center; color:var(--zafe-ink); font-size:10px; font-weight:600;}
+
+  /* POST 11 — Testimonial 2 */
+  .p11{background:var(--zafe-blue);}
+  .p11 .photo{position:absolute; top:0; left:0; right:0; height:60%; background-image:linear-gradient(180deg, transparent 50%, rgba(79,79,232,0.9) 100%), url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=500&fit=crop&q=80'); background-size:cover; background-position:center;}
+  .p11 .quote{position:absolute; top:65%; left:14px; right:14px; color:white; font-size:14px; font-weight:500; line-height:1.3;}
+  .p11 .quote strong{background:var(--zafe-yellow); color:var(--zafe-ink); padding:0 4px;}
+  .p11 .name{position:absolute; bottom:18px; left:14px; color:white; font-size:10px; font-weight:600;}
+
+  /* POST 12 — Portada Seguros */
+  .p12{background:var(--zafe-blue);}
+  .p12 .shape{position:absolute; top:-50px; right:-50px; width:180px; height:180px; border-radius:50%; background:var(--zafe-mint); opacity:0.18;}
+  .p12 .eyebrow{position:absolute; top:40%; left:14px; color:var(--zafe-mint); font-size:9px; font-weight:600; letter-spacing:0.14em; text-transform:uppercase; display:flex; align-items:center; gap:6px; transform:translateY(-100%); margin-bottom:8px;}
+  .p12 .eyebrow::before{content:''; width:18px; height:1.5px; background:var(--zafe-mint); display:inline-block;}
+  .p12 .title{position:absolute; top:42%; left:14px; right:14px; color:white; font-size:27px; font-weight:700; line-height:1.05; letter-spacing:-0.03em; transform:translateY(-10%);}
+  .p12 .title .highlight{background:var(--zafe-yellow); color:var(--zafe-ink); padding:0 5px; border-radius:3px;}
+  .p12 .badge{position:absolute; bottom:18px; left:14px; background:var(--zafe-mint); color:var(--zafe-ink); padding:7px 14px; border-radius:99px; font-size:10px; font-weight:600;}
+
+  /* ANALYSIS SECTION */
+  .analysis{margin-top:64px;}
+  .analysis h2{font-size:24px; font-weight:700; letter-spacing:-0.02em; margin-bottom:20px;}
+  .principle-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-bottom:32px;}
+  .principle{background:white; border:1px solid #E5E5EE; border-radius:12px; padding:20px;}
+  .principle-num{font-family:monospace; font-size:12px; color:var(--zafe-blue); font-weight:700; margin-bottom:6px;}
+  .principle h4{font-size:15px; font-weight:600; margin-bottom:8px;}
+  .principle p{font-size:13px; color:var(--zafe-gray); line-height:1.55;}
+
+  .legend{background:white; border:1px solid #E5E5EE; border-radius:12px; padding:24px 28px; margin-top:24px;}
+  .legend h3{font-size:13px; font-weight:600; color:var(--zafe-gray); letter-spacing:0.04em; text-transform:uppercase; margin-bottom:14px;}
+  .legend-row{display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px;}
+  .legend-item{display:flex; align-items:center; gap:10px; font-size:12px;}
+  .legend-swatch{width:24px; height:24px; border-radius:5px; flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <div class="intro">
+    <span class="tag">Proyección · Feed Instagram Q1 2026</span>
+    <h1>Así se verá @zafepay con el nuevo sistema visual</h1>
+    <p>Mockup proyectado del feed con los primeros 12 posts del Q1 cubriendo los 5 rubros prioritarios del plan 2026 (Educación, PetVet, Inmobiliaria, Seguros, Servicios contables). El feed se diseñó como conjunto: ritmo cromático azul/blanco/ink, identidad consistente y variedad de tipos de contenido.</p>
+  </div>
+
+  <!-- INSTAGRAM FRAME -->
+  <div class="ig-frame">
+    <div class="ig-topbar">
+      <span class="ig-logo">Instagram</span>
+      <div class="ig-search">🔍  Search</div>
+    </div>
+
+    <!-- Profile Header -->
+    <div class="ig-profile">
+      <div class="ig-avatar-wrap">
+        <div class="ig-avatar">
+          <svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg>
+        </div>
+      </div>
+      <div class="ig-profile-info">
+        <div class="ig-profile-top">
+          <span class="ig-username">zafepay <span class="ig-verified">✓</span></span>
+          <button class="ig-btn ig-btn-following">Following ▾</button>
+          <button class="ig-btn ig-btn-msg">Message</button>
+          <button class="ig-btn ig-btn-icon">👤+</button>
+          <button class="ig-btn ig-btn-icon">⋯</button>
+        </div>
+        <div class="ig-stats">
+          <span class="ig-stat"><strong>248</strong>posts</span>
+          <span class="ig-stat"><strong>4.812</strong>followers</span>
+          <span class="ig-stat"><strong>327</strong>following</span>
+        </div>
+        <div class="ig-name">Zafepay · Cobranza inteligente</div>
+        <div class="ig-bio">
+          Infraestructura de pagos y cobros recurrentes en un solo lugar.<br>
+          <span class="emoji">🚀</span> Automatiza tu cobranza<br>
+          <span class="emoji">💼</span> Para colegios, clínicas pet, inmobiliarias y más<br>
+          <span class="emoji">⚡</span> by Plaglabs<br>
+          <span class="blue">zafepay.com</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Story Highlights · Iconos planos en lenguaje Zafepay -->
+    <div class="ig-highlights">
+      <div class="ig-highlight">
+        <div class="ig-highlight-circle educ">
+          <!-- Birrete · Educación -->
+          <svg viewBox="0 0 40 40" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 6 L4 13 L20 20 L36 13 Z"/>
+            <path d="M10 17 L10 25 C10 27 14 30 20 30 C26 30 30 27 30 25 L30 17 L20 21 Z"/>
+            <rect x="35" y="13" width="1.6" height="9"/>
+            <circle cx="35.8" cy="23" r="2" fill="#34D8A3"/>
+          </svg>
+        </div>
+        <div class="ig-highlight-label">Educación</div>
+      </div>
+
+      <div class="ig-highlight">
+        <div class="ig-highlight-circle pet">
+          <!-- Huella · PetVet -->
+          <svg viewBox="0 0 40 40" fill="#0F1037" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="11" cy="14" rx="3.2" ry="4"/>
+            <ellipse cx="16" cy="9" rx="3" ry="3.6"/>
+            <ellipse cx="24" cy="9" rx="3" ry="3.6"/>
+            <ellipse cx="29" cy="14" rx="3.2" ry="4"/>
+            <path d="M14 22 C14 18 17 16 20 16 C23 16 26 18 26 22 C26 26 30 28 30 31 C30 33.5 28 35 25 34 C23 33.3 21.5 33 20 33 C18.5 33 17 33.3 15 34 C12 35 10 33.5 10 31 C10 28 14 26 14 22 Z"/>
+          </svg>
+        </div>
+        <div class="ig-highlight-label">PetVet</div>
+      </div>
+
+      <div class="ig-highlight">
+        <div class="ig-highlight-circle inmo">
+          <!-- Llave · Inmobiliarias -->
+          <svg viewBox="0 0 40 40" fill="#0F1037" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="20" r="6.5" fill="none" stroke="#0F1037" stroke-width="3"/>
+            <rect x="20" y="18.5" width="15" height="3"/>
+            <rect x="29" y="21.5" width="3" height="4.5"/>
+            <rect x="33" y="21.5" width="2.5" height="3.5"/>
+            <circle cx="14" cy="20" r="2" fill="#FFD84D"/>
+          </svg>
+        </div>
+        <div class="ig-highlight-label">Inmobiliarias</div>
+      </div>
+
+      <div class="ig-highlight">
+        <div class="ig-highlight-circle legal">
+          <!-- Balanza · Legal -->
+          <svg viewBox="0 0 40 40" fill="#34D8A3" xmlns="http://www.w3.org/2000/svg">
+            <rect x="19" y="6" width="2" height="26" rx="0.5"/>
+            <circle cx="20" cy="9" r="1.8"/>
+            <rect x="8" y="11" width="24" height="2" rx="0.5"/>
+            <path d="M8 13 L4 23 L16 23 Z"/>
+            <path d="M32 13 L36 23 L24 23 Z"/>
+            <rect x="14" y="31" width="12" height="2.5" rx="0.5"/>
+          </svg>
+        </div>
+        <div class="ig-highlight-label">Legal</div>
+      </div>
+
+      <div class="ig-highlight">
+        <div class="ig-highlight-circle casos">
+          <!-- Estrella · Casos éxito -->
+          <svg viewBox="0 0 40 40" fill="#FFD84D" xmlns="http://www.w3.org/2000/svg">
+            <path d="M20 5 L24 14.5 L34 15.5 L26.5 22.5 L29 33 L20 27.5 L11 33 L13.5 22.5 L6 15.5 L16 14.5 Z"/>
+          </svg>
+        </div>
+        <div class="ig-highlight-label">Casos éxito</div>
+      </div>
+
+      <div class="ig-highlight">
+        <div class="ig-highlight-circle demo">
+          <!-- Escudo Zafepay + play · Demo (replica del logo) -->
+          <svg viewBox="0 0 40 40" fill-rule="evenodd" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#4F4FE8" d="M12 6 L28 6 C29.8 6 31 7.5 31 9.3 L31 26 C31 27.8 30 29.5 28.5 30.5 L21 34.5 C20.4 34.8 19.6 34.8 19 34.5 L11.5 30.5 C10 29.5 9 27.8 9 26 L9 9.3 C9 7.5 10.2 6 12 6 Z M23.5 14 L14 20 L23.5 26 Z"/>
+          </svg>
+        </div>
+        <div class="ig-highlight-label">Demo</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="ig-tabs">
+      <div class="ig-tab active">⊞ POSTS</div>
+      <div class="ig-tab">🎬 REELS</div>
+      <div class="ig-tab">🔖 SAVED</div>
+      <div class="ig-tab">👤 TAGGED</div>
+    </div>
+
+    <!-- Grid 4x3 -->
+    <div class="ig-grid">
+
+      <!-- ROW 1 -->
+      <div class="post p1">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="shape"></div>
+        <div class="eyebrow">Educación</div>
+        <div class="title">Los 4 errores al cobrar <span class="highlight">mensualidades</span></div>
+        <div class="badge">Desliza →</div>
+      </div>
+
+      <div class="post p2">
+        <div class="dots"></div>
+        <div class="post-logo"><div class="post-logo-mark dark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text dark">zafepay</div></div>
+        <div class="eyebrow">Dato del mes</div>
+        <div class="big">3 de <span class="accent">10</span></div>
+        <div class="desc">apoderados se atrasan cuando el proceso es <strong>manual</strong>.</div>
+      </div>
+
+      <div class="post p3">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="title">Los 4 errores</div>
+        <div class="item i1"><div class="num">1</div><div class="txt">Transferencias manuales</div></div>
+        <div class="item i2"><div class="num">2</div><div class="txt">Sin recordatorios</div></div>
+        <div class="item i3"><div class="num">3</div><div class="txt">Fechas no claras</div></div>
+        <div class="item i4"><div class="num">4</div><div class="txt">Sin seguimiento</div></div>
+        <div class="pill">⚡ Menos fricción</div>
+      </div>
+
+      <!-- ROW 2 -->
+      <div class="post p4">
+        <div class="post-logo"><div class="post-logo-mark dark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text dark">zafepay</div></div>
+        <div class="quote">"</div>
+        <div class="text">Antes pasábamos <strong>2 días al mes</strong> persiguiendo pagos.</div>
+        <div class="author">
+          <div class="avatar"></div>
+          <div><div class="name">Clínica PetCare</div><div class="role">Cliente desde 2024</div></div>
+        </div>
+      </div>
+
+      <div class="post p5">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="title">Todo en una pantalla</div>
+        <div class="dash">
+          <div class="dash-side"></div>
+          <div class="dash-main">
+            <div class="dash-stat"><div class="dash-stat-lbl">Recaudado</div><div class="dash-stat-val">$43,5M</div></div>
+            <div class="dash-stat mint"><div class="dash-stat-lbl">Tx</div><div class="dash-stat-val">837</div></div>
+            <div class="dash-stat yellow"><div class="dash-stat-lbl">Cobro</div><div class="dash-stat-val">94%</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="post p6">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="shape"></div>
+        <div class="eyebrow">PetVet</div>
+        <div class="title">Recurrencia que <span class="highlight">crece</span></div>
+        <div class="icon-pet">🐾</div>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="post p7">
+        <div class="post-logo"><div class="post-logo-mark dark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text dark">zafepay</div></div>
+        <div class="stat-block">
+          <div class="stat-num">+5<span class="stat-sym">×</span></div>
+        </div>
+        <div class="stat-desc">de conversiones cuando contactas al lead en menos de <strong style="color:var(--zafe-blue)">5 minutos</strong>.</div>
+        <div class="stat-source">Fuente: Harvard Business Review</div>
+      </div>
+
+      <div class="post p8">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="icon-key"></div>
+        <div class="eyebrow">Inmobiliarias</div>
+        <div class="title">Tus arriendos <span class="highlight">a tiempo</span></div>
+        <div class="badge">Caso de éxito →</div>
+      </div>
+
+      <div class="post p9">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="shape"></div>
+        <div class="eyebrow">Demo gratis</div>
+        <div class="title">Deja de perseguir pagos</div>
+        <div class="cta">Agenda demo →</div>
+      </div>
+
+      <!-- ROW 4 -->
+      <div class="post p10">
+        <div class="frase">"Vender es <em>fácil</em>.<br>Cobrar es la pega."</div>
+        <div class="firma">— Zafepay</div>
+      </div>
+
+      <div class="post p11">
+        <div class="photo"></div>
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="quote">Recaudamos <strong>+40%</strong> desde Zafepay.</div>
+        <div class="name">— Colegio San Andrés</div>
+      </div>
+
+      <div class="post p12">
+        <div class="post-logo"><div class="post-logo-mark"><svg viewBox="0 0 24 24" fill-rule="evenodd"><path fill="white" d="M7 3 L17 3 C18.1 3 19 3.9 19 5 L19 15.5 C19 16.6 18.4 17.6 17.5 18.2 L13 20.7 C12.3 21.1 11.7 21.1 11 20.7 L6.5 18.2 C5.6 17.6 5 16.6 5 15.5 L5 5 C5 3.9 5.9 3 7 3 Z M14 8.5 L8.5 12 L14 15.5 Z"/></svg></div><div class="post-logo-text">zafepay</div></div>
+        <div class="shape"></div>
+        <div class="eyebrow">Servicios contables</div>
+        <div class="title">Cobra honorarios <span class="highlight">sin perseguir</span></div>
+        <div class="badge">Conoce más →</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="analysis">
+    <h2>Principios del feed</h2>
+    <div class="principle-grid">
+      <div class="principle">
+        <div class="principle-num">01</div>
+        <h4>Ritmo cromático en zigzag</h4>
+        <p>Alternamos fondos azul / claro / ink en patrón de 3 para evitar bloques monocromáticos pesados. Cada fila tiene al menos un fondo claro que da respiro al feed.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">02</div>
+        <h4>Logo siempre arriba a la izquierda</h4>
+        <p>Sin excepción, todos los posts tienen el lockup mini Zafepay en la esquina superior izquierda. Identidad reconocible incluso scrolleando rápido.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">03</div>
+        <h4>Highlight amarillo en palabras clave</h4>
+        <p>Cada portada destaca con fondo amarillo una palabra (mensualidades, crece, a tiempo, sin perseguir). Lectura instantánea del beneficio.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">04</div>
+        <h4>Variedad de tipos de contenido</h4>
+        <p>Mezclamos portadas, datos, listas, testimonios, producto, frases motivacionales y CTAs. Evita la sensación de "feed de catálogo".</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">05</div>
+        <h4>Cobertura por rubro</h4>
+        <p>Los 5 rubros del plan 2026 (Educación, PetVet, Inmobiliaria, Seguros, Contables) tienen presencia rotativa. Cada visitante encuentra contenido relevante.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-num">06</div>
+        <h4>Story Highlights por rubro</h4>
+        <p>6 highlights permanentes (uno por rubro + Casos de éxito + Demo) facilitan que nuevos seguidores encuentren contenido específico de su industria.</p>
+      </div>
+    </div>
+
+    <div class="legend">
+      <h3>Distribución cromática del feed</h3>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-swatch" style="background:#4F4FE8;"></div>7 posts · Azul Zafepay (58%)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#FAFAFE; border:1px solid #DBDBDB;"></div>2 posts · Fondo claro (17%)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#E3F9F0;"></div>1 post · Mint suave (8%)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#FFD84D;"></div>1 post · Amarillo (8%)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#0F1037;"></div>1 post · Ink (8%)</div>
+      </div>
+    </div>
+
+    <!-- ICONOS DE HIGHLIGHTS A TAMAÑO GRANDE -->
+    <h2 style="margin-top:64px; margin-bottom:8px;">Iconos de Story Highlights</h2>
+    <p style="color:var(--zafe-gray); font-size:14px; margin-bottom:28px; max-width:680px;">Cada icono diseñado en el lenguaje plano del logo Zafepay. Para usarlos como portadas reales de tus highlights en Instagram, exporta cada uno como imagen 1080×1080 (puedes hacer screenshot y recortar, o pedirme que te genere los PNG sueltos).</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:24px; margin-bottom:48px;">
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="width:200px; height:200px; border-radius:50%; background:#4F4FE8; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(79,79,232,0.25);">
+          <svg viewBox="0 0 40 40" fill="white" width="100" height="100">
+            <path d="M20 6 L4 13 L20 20 L36 13 Z"/>
+            <path d="M10 17 L10 25 C10 27 14 30 20 30 C26 30 30 27 30 25 L30 17 L20 21 Z"/>
+            <rect x="35" y="13" width="1.6" height="9"/>
+            <circle cx="35.8" cy="23" r="2" fill="#34D8A3"/>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px; font-weight:600;">Educación</div>
+          <div style="font-size:11px; color:var(--zafe-gray); font-family:monospace; margin-top:2px;">Fondo #4F4FE8</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="width:200px; height:200px; border-radius:50%; background:#34D8A3; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(52,216,163,0.3);">
+          <svg viewBox="0 0 40 40" fill="#0F1037" width="100" height="100">
+            <ellipse cx="11" cy="14" rx="3.2" ry="4"/>
+            <ellipse cx="16" cy="9" rx="3" ry="3.6"/>
+            <ellipse cx="24" cy="9" rx="3" ry="3.6"/>
+            <ellipse cx="29" cy="14" rx="3.2" ry="4"/>
+            <path d="M14 22 C14 18 17 16 20 16 C23 16 26 18 26 22 C26 26 30 28 30 31 C30 33.5 28 35 25 34 C23 33.3 21.5 33 20 33 C18.5 33 17 33.3 15 34 C12 35 10 33.5 10 31 C10 28 14 26 14 22 Z"/>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px; font-weight:600;">PetVet</div>
+          <div style="font-size:11px; color:var(--zafe-gray); font-family:monospace; margin-top:2px;">Fondo #34D8A3</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="width:200px; height:200px; border-radius:50%; background:#FFD84D; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(255,216,77,0.4);">
+          <svg viewBox="0 0 40 40" fill="#0F1037" width="100" height="100">
+            <circle cx="14" cy="20" r="6.5" fill="none" stroke="#0F1037" stroke-width="3"/>
+            <rect x="20" y="18.5" width="15" height="3"/>
+            <rect x="29" y="21.5" width="3" height="4.5"/>
+            <rect x="33" y="21.5" width="2.5" height="3.5"/>
+            <circle cx="14" cy="20" r="2" fill="#4F4FE8"/>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px; font-weight:600;">Inmobiliarias</div>
+          <div style="font-size:11px; color:var(--zafe-gray); font-family:monospace; margin-top:2px;">Fondo #FFD84D</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="width:200px; height:200px; border-radius:50%; background:#0F1037; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(15,16,55,0.35);">
+          <svg viewBox="0 0 40 40" fill="#34D8A3" width="100" height="100">
+            <rect x="19" y="6" width="2" height="26" rx="0.5"/>
+            <circle cx="20" cy="9" r="1.8"/>
+            <rect x="8" y="11" width="24" height="2" rx="0.5"/>
+            <path d="M8 13 L4 23 L16 23 Z"/>
+            <path d="M32 13 L36 23 L24 23 Z"/>
+            <rect x="14" y="31" width="12" height="2.5" rx="0.5"/>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px; font-weight:600;">Legal</div>
+          <div style="font-size:11px; color:var(--zafe-gray); font-family:monospace; margin-top:2px;">Fondo #0F1037</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="width:200px; height:200px; border-radius:50%; background:#2E2EBF; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(46,46,191,0.3);">
+          <svg viewBox="0 0 40 40" fill="#FFD84D" width="100" height="100">
+            <path d="M20 5 L24 14.5 L34 15.5 L26.5 22.5 L29 33 L20 27.5 L11 33 L13.5 22.5 L6 15.5 L16 14.5 Z"/>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px; font-weight:600;">Casos éxito</div>
+          <div style="font-size:11px; color:var(--zafe-gray); font-family:monospace; margin-top:2px;">Fondo #2E2EBF</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; align-items:center; gap:14px;">
+        <div style="width:200px; height:200px; border-radius:50%; background:white; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 4px #4F4FE8, 0 8px 24px rgba(79,79,232,0.2);">
+          <svg viewBox="0 0 40 40" fill-rule="evenodd" width="110" height="110">
+            <path fill="#4F4FE8" d="M12 6 L28 6 C29.8 6 31 7.5 31 9.3 L31 26 C31 27.8 30 29.5 28.5 30.5 L21 34.5 C20.4 34.8 19.6 34.8 19 34.5 L11.5 30.5 C10 29.5 9 27.8 9 26 L9 9.3 C9 7.5 10.2 6 12 6 Z M23.5 14 L14 20 L23.5 26 Z"/>
+          </svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px; font-weight:600;">Demo</div>
+          <div style="font-size:11px; color:var(--zafe-gray); font-family:monospace; margin-top:2px;">Logo Zafepay</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background:white; border:1px solid #E5E5EE; border-radius:12px; padding:24px 28px;">
+      <h3 style="font-size:13px; font-weight:600; color:var(--zafe-gray); letter-spacing:0.04em; text-transform:uppercase; margin-bottom:14px;">Lógica del sistema de iconos</h3>
+      <p style="font-size:14px; line-height:1.7; color:var(--zafe-ink);">Cada icono se construye con <strong style="color:var(--zafe-blue)">formas geométricas planas</strong> (sin gradientes, sin sombras internas, sin línea fina), siguiendo el lenguaje del logo Zafepay. El <strong style="color:var(--zafe-blue)">highlight de Demo replica directamente el escudo del logo</strong> con la flecha play — el más reconocible para invitar a la acción comercial. Los colores de fondo se asignan por <strong style="color:var(--zafe-blue)">temperatura de rubro</strong>: azul para educación (profesional), mint para pet (calidez), amarillo para inmobiliaria (energía), ink para legal (seriedad), azul deep para casos éxito (premium), blanco con borde para Demo (CTA principal).</p>
+    </div>
+
+  </div>
+
+</div>
+
+</body>
+</html>
